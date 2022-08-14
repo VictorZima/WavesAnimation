@@ -7,55 +7,71 @@
 
 import SwiftUI
 
+struct OptionsForWaves: Hashable {
+    let duration: Double
+    let opacity: CGFloat
+    let amplitude: CGFloat
+    let baseHightOffset: CGFloat
+    let color: Color
+}
+
 struct ContentView: View {
+    let options = [
+        OptionsForWaves(duration: 5, opacity: 0.4, amplitude: 110, baseHightOffset: 65, color: .red),
+        OptionsForWaves(duration: 11, opacity: 0.3, amplitude: 200, baseHightOffset: 70, color: .green),
+        OptionsForWaves(duration: 4, opacity: 0.4, amplitude: 200, baseHightOffset: 95, color: .black),
+        OptionsForWaves(duration: 11, opacity: 0.3, amplitude: 50, baseHightOffset: 75, color: .blue)
+    ]
     let universalSquare = UIScreen.main.bounds
     @State private var isAnimated = false
     
     var body: some View {
         ZStack {
-            getWavePath(interval: universalSquare.width * 1.5, amplitude: 110, baseHight: 65 + (universalSquare.height / 2))
-                .foregroundColor(
-                    Color.init(red: 0.2, green: 0.4, blue: 0.7)
-                        .opacity(0.4))
-                .offset(x: isAnimated ? -1 * (universalSquare.width * 1.5) : 0)
-                .animation(
-                    Animation.linear(duration: 5)
-                        .repeatForever(autoreverses: false),
-                    value: isAnimated
-                )
             
-            getWavePath(interval: universalSquare.width, amplitude: 200, baseHight: 70 + (universalSquare.height / 2))
-                .foregroundColor(
-                    Color.init(red: 0.3, green: 0.6, blue: 0.4)
-                        .opacity(0.4))
-                .offset(x: isAnimated ? -1 * universalSquare.width : 0)
-                .animation(
-                    Animation.linear(duration: 11)
-                        .repeatForever(autoreverses: false),
-                    value: isAnimated
-                )
+            ForEach(options, id: \.self) { option in
+                getWavePath(interval: universalSquare.width * 1.5, amplitude: option.amplitude, baseHight: option.baseHightOffset + (universalSquare.height / 2))
+                    .foregroundColor(option.color)
+                    .opacity(option.opacity)
+                    .offset(x: isAnimated ? -1 * (universalSquare.width * 1.5) : 0)
+                    .animation(
+                        Animation.linear(duration: option.duration)
+                            .repeatForever(autoreverses: false),
+                        value: isAnimated
+                    )
+            }
             
-            getWavePath(interval: universalSquare.width * 3, amplitude: 200, baseHight: 95 + universalSquare.height / 2)
-                .foregroundColor(
-                    Color(.black)
-                        .opacity(0.2))
-                .offset(x: isAnimated ? -1 * (universalSquare.width  * 3) : 0)
-                .animation(
-                    Animation.linear(duration: 4)
-                        .repeatForever(autoreverses: false),
-                    value: isAnimated
-                )
-            
-            getWavePath(interval: universalSquare.width * 1.2, amplitude: 50, baseHight: 75 + universalSquare.height / 2)
-                .foregroundColor(
-                    Color.init(red: 0.6, green: 0.9, blue: 1)
-                        .opacity(0.4))
-                .offset(x: isAnimated ? -1 * (universalSquare.width  * 1.2) : 0)
-                .animation(
-                    Animation.linear(duration: 5)
-                        .repeatForever(autoreverses: false),
-                    value: isAnimated
-                )
+//            getWavePath(interval: universalSquare.width * 1, amplitude: 200, baseHight: 70 + (universalSquare.height / 2))
+//                .foregroundColor(
+//                    Color.green
+//                        .opacity(0.3))
+//                .offset(x: isAnimated ? -1 * universalSquare.width : 0)
+//                .animation(
+//                    Animation.linear(duration: 11)
+//                        .repeatForever(autoreverses: false),
+//                    value: isAnimated
+//                )
+//
+//            getWavePath(interval: universalSquare.width * 3, amplitude: 200, baseHight: 95 + universalSquare.height / 2)
+//                .foregroundColor(
+//                    Color.black
+//                        .opacity(0.4))
+//                .offset(x: isAnimated ? -1 * (universalSquare.width  * 3) : 0)
+//                .animation(
+//                    Animation.linear(duration: 4)
+//                        .repeatForever(autoreverses: false),
+//                    value: isAnimated
+//                )
+//
+//            getWavePath(interval: universalSquare.width * 1.2, amplitude: 50, baseHight: 75 + universalSquare.height / 2)
+//                .foregroundColor(
+//                    Color.blue
+//                        .opacity(0.3))
+//                .offset(x: isAnimated ? -1 * (universalSquare.width  * 1.2) : 0)
+//                .animation(
+//                    Animation.linear(duration: 5)
+//                        .repeatForever(autoreverses: false),
+//                    value: isAnimated
+//                )
         }
         .onAppear() {
             self.isAnimated = true
