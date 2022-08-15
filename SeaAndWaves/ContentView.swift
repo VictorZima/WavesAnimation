@@ -27,7 +27,6 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            
             ForEach(options, id: \.self) { option in
                 getWavePath(interval: universalSquare.width * 1.5, amplitude: option.amplitude, baseHight: option.baseHightOffset + (universalSquare.height / 2))
                     .foregroundColor(option.color)
@@ -39,46 +38,17 @@ struct ContentView: View {
                         value: isAnimated
                     )
             }
-            
-//            getWavePath(interval: universalSquare.width * 1, amplitude: 200, baseHight: 70 + (universalSquare.height / 2))
-//                .foregroundColor(
-//                    Color.green
-//                        .opacity(0.3))
-//                .offset(x: isAnimated ? -1 * universalSquare.width : 0)
-//                .animation(
-//                    Animation.linear(duration: 11)
-//                        .repeatForever(autoreverses: false),
-//                    value: isAnimated
-//                )
-//
-//            getWavePath(interval: universalSquare.width * 3, amplitude: 200, baseHight: 95 + universalSquare.height / 2)
-//                .foregroundColor(
-//                    Color.black
-//                        .opacity(0.4))
-//                .offset(x: isAnimated ? -1 * (universalSquare.width  * 3) : 0)
-//                .animation(
-//                    Animation.linear(duration: 4)
-//                        .repeatForever(autoreverses: false),
-//                    value: isAnimated
-//                )
-//
-//            getWavePath(interval: universalSquare.width * 1.2, amplitude: 50, baseHight: 75 + universalSquare.height / 2)
-//                .foregroundColor(
-//                    Color.blue
-//                        .opacity(0.3))
-//                .offset(x: isAnimated ? -1 * (universalSquare.width  * 1.2) : 0)
-//                .animation(
-//                    Animation.linear(duration: 5)
-//                        .repeatForever(autoreverses: false),
-//                    value: isAnimated
-//                )
+            SailView()
+                .opacity(0.5)
+                .rotationEffect(Angle.degrees(isAnimated ? 0 : 3))
+                .animation(
+                    Animation.easeInOut(duration: 4)
+                        .repeatForever(autoreverses: true), value: isAnimated
+                )
         }
         .onAppear() {
             self.isAnimated = true
         }
-        
-        
-        
     }
     
     func getWavePath(interval: CGFloat, amplitude: CGFloat = 100, baseHight: CGFloat = UIScreen.main.bounds.height / 2) -> Path {
